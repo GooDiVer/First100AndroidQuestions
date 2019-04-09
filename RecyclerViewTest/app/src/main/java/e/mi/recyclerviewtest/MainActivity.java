@@ -21,7 +21,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
-    TextView tv;
     SoApi mApi;
     MyAdapter adapter;
     List<Item> questionList;
@@ -34,16 +33,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefresh);
+        rv = findViewById(R.id.recyclerView);
         final NetworkService mService = NetworkService.getInstance();
         mApi = mService.getSoApi();
-
         questionList = new ArrayList<>();
         adapter = new MyAdapter(MainActivity.this, questionList);
-        rv = findViewById(R.id.recyclerView);
+
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
         loadData();
-
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

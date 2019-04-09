@@ -10,7 +10,6 @@ public class NetworkService {
     private static final String BASE_URL = "https://api.stackexchange.com";
     private static Retrofit mRetrofit;
     public static NetworkService mService;
-//    public AndroidQuestions questions;
 
     public NetworkService() {
           mRetrofit = new Retrofit.Builder()
