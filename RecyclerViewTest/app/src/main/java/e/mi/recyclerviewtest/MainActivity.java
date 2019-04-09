@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<AndroidQuestions> call, Throwable t) {
-                Log.i("info", t.getMessage());
+                Log.i("infoooo", t.getMessage());
             }
         });
 
