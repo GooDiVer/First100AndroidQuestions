@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -33,18 +34,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefresh);
-        NetworkService mService = NetworkService.getInstance();
+        final NetworkService mService = NetworkService.getInstance();
         mApi = mService.getSoApi();
 
+        questionList = new ArrayList<>();
+        adapter = new MyAdapter(MainActivity.this, questionList);
         rv = findViewById(R.id.recyclerView);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        loadData();
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadData();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+
+    }
+
+    public void loadData() {
+        Toast.makeText(MainActivity.this,String.valueOf(adapter.questionList.size()),Toast.LENGTH_LONG).show();
         mApi.getQuestions().enqueue(new Callback<AndroidQuestions>() {
             @Override
             public void onResponse(Call<AndroidQuestions> call, Response<AndroidQuestions> response) {
+                Toast.makeText(MainActivity.this,String.valueOf(adapter.questionList.size()),Toast.LENGTH_LONG).show();
                 questionList = response.body().getItems();
-                adapter = new MyAdapter(MainActivity.this,questionList);
-                rv.setAdapter(adapter);
-                rv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
+                adapter.clearItems();
+                adapter.addItems(questionList);
                 Log.i("info", String.valueOf(adapter.getItemCount()));
 
             }
@@ -53,18 +77,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("infoooo", t.getMessage());
             }
         });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },4000);
-            }
-        });
-
     }
 }
