@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         loadData();
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                },2000);
+                },1000);
             }
         });
 
