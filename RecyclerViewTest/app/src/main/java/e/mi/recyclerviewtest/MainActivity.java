@@ -61,11 +61,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadData() {
-        Toast.makeText(MainActivity.this,String.valueOf(adapter.questionList.size()),Toast.LENGTH_LONG).show();
         mApi.getQuestions().enqueue(new Callback<AndroidQuestions>() {
             @Override
             public void onResponse(Call<AndroidQuestions> call, Response<AndroidQuestions> response) {
-                Toast.makeText(MainActivity.this,String.valueOf(adapter.questionList.size()),Toast.LENGTH_LONG).show();
                 questionList = response.body().getItems();
                 adapter.clearItems();
                 adapter.addItems(questionList);
@@ -74,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<AndroidQuestions> call, Throwable t) {
-                Log.i("infoooo", t.getMessage());
+                Toast.makeText(MainActivity.this,"Failed to load data! Check internet connection",Toast.LENGTH_LONG).show();
+                Log.i("serverFailure", t.getMessage());
             }
         });
     }

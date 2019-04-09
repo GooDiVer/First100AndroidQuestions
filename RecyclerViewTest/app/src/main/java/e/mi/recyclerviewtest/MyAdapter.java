@@ -53,7 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         Item item = questionList.get(i);
         String title = item.getTitle();
         String link = item.getLink();
-        String text = String.format("%d) <a href=' %s '> %s </a>",i,link,title);
+        String text = (i + 1) + ") <a href='" + link + "'>" + title + "</a>";
 //        myViewHolder.title.setText(text);
         myViewHolder.title.setMovementMethod(LinkMovementMethod.getInstance());
         myViewHolder.title.setText(Html.fromHtml(text));
