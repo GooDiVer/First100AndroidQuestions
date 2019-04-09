@@ -1,5 +1,7 @@
 package e.mi.recyclerviewtest;
 
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
     MyAdapter adapter;
     List<Item> questionList;
     RecyclerView rv;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh);
         NetworkService mService = NetworkService.getInstance();
         mApi = mService.getSoApi();
 
@@ -50,7 +54,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },4000);
+            }
+        });
 
     }
 }
